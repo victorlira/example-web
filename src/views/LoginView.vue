@@ -1,15 +1,33 @@
 <script setup>
 import { ref } from 'vue';
+import LoginService from '@/services/LoginService';
+import router from '@/router';
 
 const email = ref('');
 const password = ref('');
 
+const loginService = new LoginService();
+
 const handleLogin = () => {
-  
+  loginService.login(email.value, password.value)
+    .then(result => {
+      alert('Login realizado com sucesso!')
+      router.push('/');
+    }).catch(error => {
+      alert('E-mail e/ou senha inválido(s).')
+    });
+};
+
+const createUser = () => {
+  loginService.createUser('Victor', 'professor', 'victor.cavalcanti@palmares.ifpe.edu.br', '12345678')
+    .then(result => {
+      alert('Usuário criado com sucesso!');
+    })
 };
 
 const recoverPassword = () => {
-  
+  loginService.recoverPassword(email.value)
+    .then(() => alert('E-mail de recuperação de senha enviado com sucesso!'))
 };
 </script>
 
@@ -27,6 +45,7 @@ const recoverPassword = () => {
         </div>
         <div class="button-group">
           <button type="button" class="btn-recover" @click="recoverPassword">Recuperar Senha</button>
+          <button type="button" class="btn-new" @click="createUser">Criar Usuário</button>
           <button type="submit" class="btn-login">Login</button>
         </div>
       </form>

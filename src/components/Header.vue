@@ -1,7 +1,14 @@
 <script setup>
-import { ref } from 'vue'
+import { getAuth } from 'firebase/auth';
+import { onMounted, ref } from 'vue';
 
-const usuario = ref('user@gmail.com')
+const usuario = ref('')
+
+onMounted(() => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  usuario.value = user?.email;
+});
 
 </script>
 
